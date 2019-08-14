@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <ImageView
+            android:id="@+id/imageview_icon"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:background="@mipmap/ic_launcher"
+            android:layout_marginStart="5dp"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/textview_app_name"
+            android:layout_weight="6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="App name"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/textview_size"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"/>
+        <CheckBox
+            android:id="@+id/checkbox_uninstall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            app:buttonTint="#03A9F4"
+            android:layout_marginRight="1dp"/>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

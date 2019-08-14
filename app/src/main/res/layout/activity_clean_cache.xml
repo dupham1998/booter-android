@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="10"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textview_size_clean_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000MB"
+                android:textSize="40sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleview_clean_cache"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/cache_item"/>
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/button_clean_cache"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Clean "
+            android:background="@color/colorButton"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressBar_cache"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/windowBackground"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="scanning ..."
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/textview_package_name_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="package name "/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressBar_cleaning"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/windowBackground"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cleaning ..."
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/textview_size_cache_clean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000 mb"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressBar_clean_done"
+        android:background="?android:attr/windowBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/textview_size_cache_cleaned"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cleaned 1000 MB"
+            android:textSize="30sp"/>
+    </LinearLayout>
+
+</FrameLayout>
