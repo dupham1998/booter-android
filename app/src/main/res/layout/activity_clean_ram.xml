@@ -37,7 +37,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <Button
-            android:id="@+id/button_clean_ram"
+            android:id="@+id/button_cleaning_ram"
             android:layout_width="300dp"
             android:layout_height="0dp"
             android:layout_weight="0.7"
@@ -68,6 +68,33 @@
 
         <TextView
             android:id="@+id/textview_size_ram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000 mb"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/progressBar_ram_cleanning"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:attr/windowBackground"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:layout_width="150dp"
+            android:layout_height="150dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cleaning ..."
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/textview_ram_clean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1000 mb"

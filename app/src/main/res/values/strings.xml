@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AndroidBooster</string>
+    <string name="done">done</string>
+    <string name="my_device_status">My Device Status</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

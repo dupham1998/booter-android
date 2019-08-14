@@ -1,5 +1,6 @@
 package com.myapplication.androidbooster.service;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -37,6 +38,10 @@ public class CleanerRamService {
         new ScanTask().execute();
     }
 
+    public void clean(){
+        new CleanRamTask().execute();
+    }
+
     public void setOnActionCleanRamListener(OnActionCleanRamListener listener){
         this.listener = listener;
     }
@@ -60,32 +65,32 @@ public class CleanerRamService {
 
             for(ActivityManager.RunningServiceInfo service : serviceList) {
 
-                        int[] _pid = new int[1];
-                        _pid[0] = service.pid;
-                        Debug.MemoryInfo[] processMemInfo = activityManager.getProcessMemoryInfo(_pid);
+                int[] _pid = new int[1];
+                _pid[0] = service.pid;
+                Debug.MemoryInfo[] processMemInfo = activityManager.getProcessMemoryInfo(_pid);
 
-                        if (processMemInfo[0].getTotalPss() > 0) {
+                if (processMemInfo[0].getTotalPss() > 0) {
 
-                            try {
-                                PackageManager pm = mContext.getPackageManager();
-                                ApplicationInfo applicationInfo = pm.getApplicationInfo(service.process, 0);
+                    try {
+                        PackageManager pm = mContext.getPackageManager();
+                        ApplicationInfo applicationInfo = pm.getApplicationInfo(service.process, 0);
 
-                                String packageName = service.process;
-                                int pid = service.pid;
-                                int ram = processMemInfo[0].getTotalPss();
-                                String applicationName = (String) pm.getApplicationLabel(applicationInfo);
-                                Drawable icon = mContext.getPackageManager().getApplicationIcon(service.process);
+                        String packageName = service.process;
+                        int pid = service.pid;
+                        int ram = processMemInfo[0].getTotalPss();
+                        String applicationName = (String) pm.getApplicationLabel(applicationInfo);
+                        Drawable icon = mContext.getPackageManager().getApplicationIcon(service.process);
 
-                                AppRunningInfo app = new AppRunningInfo(packageName, (String) pm.getApplicationLabel(applicationInfo), icon, pid, ram);
-                                apps.add(app);
-                                publishProgress(app);
-                            } catch (PackageManager.NameNotFoundException e) {
-                                e.printStackTrace();
-                            } catch (NullPointerException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        AppRunningInfo app = new AppRunningInfo(packageName, (String) pm.getApplicationLabel(applicationInfo), icon, pid, ram);
+                        apps.add(app);
+                        publishProgress(app);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
                     }
+                }
+            }
 
             return new ArrayList<>(apps);
         }
@@ -102,27 +107,66 @@ public class CleanerRamService {
 
     }
 
-    public class CleanTask extends AsyncTask<List<AppRunningInfo>, AppRunningInfo, Void>{
+    public class  CleanRamTask extends AsyncTask<Void, AppRunningInfo, Void>{
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            if(listener != null) listener.onCleanStarted();
         }
 
         @Override
-        protected Void doInBackground(List<AppRunningInfo>... lists) {
+        protected Void doInBackground(Void... voids) {
+
+            ActivityManager activityManager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+            final List<ActivityManager.RunningServiceInfo> serviceList = activityManager
+                    .getRunningServices(Integer.MAX_VALUE);
+            final List<AppRunningInfo> apps = new ArrayList<AppRunningInfo>();
+            final CountDownLatch countDownLatch = new CountDownLatch(serviceList.size());
+
+            for(ActivityManager.RunningServiceInfo service : serviceList) {
+
+                int[] _pid = new int[1];
+                _pid[0] = service.pid;
+                Debug.MemoryInfo[] processMemInfo = activityManager.getProcessMemoryInfo(_pid);
+
+                if (processMemInfo[0].getTotalPss() > 0) {
+
+                    try {
+                        PackageManager pm = mContext.getPackageManager();
+                        ApplicationInfo applicationInfo = pm.getApplicationInfo(service.process, 0);
+
+                        String packageName = service.process;
+                        int pid = service.pid;
+                        int ram = processMemInfo[0].getTotalPss();
+                        String applicationName = (String) pm.getApplicationLabel(applicationInfo);
+                        Drawable icon = mContext.getPackageManager().getApplicationIcon(service.process);
+
+                        AppRunningInfo app = new AppRunningInfo(packageName, (String) pm.getApplicationLabel(applicationInfo), icon, pid, ram);
+                        apps.add(app);
+                        publishProgress(app);
+                        // kill process
+                        activityManager.killBackgroundProcesses(packageName);
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
             return null;
         }
 
 
         @Override
         protected void onProgressUpdate(AppRunningInfo... values) {
-            super.onProgressUpdate(values);
+            if(listener != null) listener.onCleanProgressUpdate(values[0]);
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+            if(listener != null) listener.onCleanCompleted();
         }
 
     }

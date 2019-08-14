@@ -1,9 +1,10 @@
 package com.myapplication.androidbooster.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +19,20 @@ import com.myapplication.androidbooster.service.CleanerRamService;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CleanRamActivity  extends AppCompatActivity implements CleanerRamService.OnActionCleanRamListener {
+public class CleanRamActivity  extends AppCompatActivity implements CleanerRamService.OnActionCleanRamListener , View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private List<AppRunningInfo> apps;
     private CleanerRamService mCleanerRamService;
     private CleanRamAdapter adapter;
+
+    private View mProgressBarCleaning;
     private View mProgressBarScanning;
+
     private TextView mTextViewPackageScan;
+    private TextView mTextViewRamClean;
+
+    private Button mButtonCleanRam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +46,7 @@ public class CleanRamActivity  extends AppCompatActivity implements CleanerRamSe
         mCleanerRamService.scan();
 
         setUpRecyclerView();
+        mButtonCleanRam.setOnClickListener(this);
     }
 
     public void setUpRecyclerView(){
@@ -55,6 +63,9 @@ public class CleanRamActivity  extends AppCompatActivity implements CleanerRamSe
     public void findView(){
         mProgressBarScanning = findViewById(R.id.progressBar_ram_scan);
         mTextViewPackageScan = (TextView) findViewById(R.id.textview_size_ram);
+        mProgressBarCleaning = findViewById(R.id.progressBar_ram_cleanning);
+        mTextViewRamClean = (TextView)  findViewById(R.id.textview_ram_clean);
+        mButtonCleanRam = (Button) findViewById(R.id.button_cleaning_ram);
     }
     @Override
     public void onScanStarted() {
@@ -75,17 +86,17 @@ public class CleanRamActivity  extends AppCompatActivity implements CleanerRamSe
 
     @Override
     public void onCleanStarted() {
-
+        showProgressClean(true);
     }
 
     @Override
     public void onCleanProgressUpdate(AppRunningInfo app) {
-
+       mTextViewRamClean.setText(app.getPackageName());
     }
 
     @Override
     public void onCleanCompleted() {
-
+        mTextViewRamClean.setText(R.string.done);
     }
 
     public void showProgressScan(boolean show){
@@ -94,6 +105,24 @@ public class CleanRamActivity  extends AppCompatActivity implements CleanerRamSe
         }
         else {
             mProgressBarScanning.setVisibility(View.GONE);
+        }
+    }
+
+    public void showProgressClean(boolean show){
+
+        if(show){
+            mProgressBarCleaning.setVisibility(View.VISIBLE);
+        }
+        else {
+            mProgressBarCleaning.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.equals(mButtonCleanRam)){
+            Toast.makeText(this, "click clean ram", Toast.LENGTH_SHORT).show();
+            mCleanerRamService.clean();
         }
     }
 }
