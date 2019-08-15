@@ -56,13 +56,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Intent myIntent = null;
+
                 switch (menuItem.getItemId()){
                     case R.id.nav_device_status:
-                        Toast.makeText(getApplication(), "navigation device status", Toast.LENGTH_SHORT).show();
+                        myIntent = new Intent(MainActivity.this, DeviceStatusActivity.class);
+                        getApplication().startActivity(myIntent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        break;
                     case R.id.nav_about:
-                        Toast.makeText(getApplication(), "navigation settings", Toast.LENGTH_SHORT).show();
+                        myIntent = new Intent(MainActivity.this, AboutActivity.class);
+                        getApplication().startActivity(myIntent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        break;
                     case R.id.nav_setting:
-                        Toast.makeText(getApplication(), "navigation about", Toast.LENGTH_SHORT).show();
+                        myIntent = new Intent(MainActivity.this, SettingActivity.class);
+                        getApplication().startActivity(myIntent);
+                        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_left);
+                        break;
                 }
                 return true;
             }
@@ -84,4 +95,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.startActivity(myIntent);
         }
     }
+
 }
